@@ -1,21 +1,22 @@
 # Proposal-Writing Workflow (proposal-workflow)
 
-> A **subject-agnostic** proposal-writing automation workflow packaged as an **Agent Skill**. For any discipline and any topic: supply a title (literature optional — the agent searches references itself when none are given) and receive a complete proposal pack.
+English: this file ｜ 中文: [README.md](README.md)
 
-Target users: master's (also bachelor's / PhD) **opening reports / project proposals** at Chinese universities. No coding skills or AI expertise required.
+A proposal-writing workflow packaged as an Agent Skill. It is not tied to any subject or topic: give it a title and it gets to work — if you have no reference files, the agent searches the literature online by itself. When it finishes, you get a complete set of proposal files (Word, PDF, reference library, statistical plan, and so on).
+
+Intended users: master's students at Chinese universities (undergraduates also fine) writing an opening report / research proposal.
 
 ---
 
-## ✨ Highlights
+## What it does
 
-- **Subject-agnostic**: a 7-phase pipeline that applies to any discipline; per-topic special rules live in `custom_rules` per project and never pollute the generic ruleset.
-- **Works with just a topic**: literature is optional. When the user gives only a title or research idea, the agent searches and verifies references itself (reviews first → highly cited recent work → classic methods), graded A/B/C via Crossref / OpenAlex / PubMed etc.; no fabricated entries, no unverified preprints.
-- **Keeps your school template**: one-click backfill into your school's Word template (cover / review forms / transcript preserved), references appended automatically; uses only built-in Windows tools — no Python required.
-- **Complete deliverable set**: Word + PDF + Markdown archive + reference library + statistical plan + QA report + claim–evidence table.
-- **Works on two platforms**: compatible with Claude (Agent Skills) and DSH; the same templates/scripts are readable by any AI.
-- **Final reference integrity check**: before delivery, every cited reference is re-verified against DOI/source (Crossref API etc.); failures are removed or downgraded, and a verification report is included in the deliverables.
+- Works for any discipline. The seven-phase pipeline is not tied to a topic; rules specific to one project (banned terms, instrument order, etc.) are kept in that project's config and never mixed into the shared rules.
+- Works with just a title or a rough idea. With no literature provided, the agent searches online (Crossref / OpenAlex / PubMed etc.) and checks every entry's authors, year, volume and pages; entries it cannot verify never make it into the report.
+- References are re-checked before delivery. Problem entries are removed or listed for manual confirmation instead of slipping through silently.
+- Fills your school's Word template. The cover, review forms and transcript stay untouched; the script only uses Windows built-in tools, no Python needed.
+- Complete deliverables: Word, PDF, Markdown archive, reference library, statistical plan, QA report, and a claim–evidence table.
 
-## 📦 Deliverables per topic (9 items)
+## Deliverables per topic (9 items)
 
 | # | File | Purpose |
 |---|---|---|
@@ -25,56 +26,58 @@ Target users: master's (also bachelor's / PhD) **opening reports / project propo
 | 03 | Markdown archive | Editing, archiving |
 | 04 | Final QA report | Delivery quality summary |
 | 05 | Reference verification report | A/B/C grades + verification record |
-| 06 | Statistical design & plan | Frozen before data collection |
-| 07 | Claim–evidence table | Claim ↔ reference mapping |
-| 08 | Reference library | All entries (≥ school minimum) |
+| 06 | Statistical design & plan | Finalized before data collection |
+| 07 | Claim–evidence table | Which reference supports which claim |
+| 08 | Reference library | All entries (no fewer than the school requires) |
 
-## 🚀 Quick Start
+## Getting started
 
-### For Claude users
+### Claude users
+
 ```bash
+# Put the whole proposal-workflow/ folder into Claude's skills directory
 mkdir -p ~/.claude/skills
 cp -r proposal-workflow ~/.claude/skills/
 ```
-Then tell Claude: **"Write an opening report — give me the topic-input checklist first."**
 
-### For DSH (DeepSeek Harness) users
+Then tell Claude: "Write an opening report — give me the topic-input checklist first."
+
+### DSH (DeepSeek Harness) users
+
 ```
 Copy the proposal-workflow/ folder into ~/.dsh/skills/
 ```
-DSH auto-discovers the skill (triggers: 开题报告 / 一键开题 / 科研写作).
 
-### Fully manual
-No AI required: follow `00_README.md` and run `scripts/build_proposal_docx_template.ps1` yourself.
+DSH picks the skill up automatically; saying "写开题报告" or "一键开题" triggers it.
 
-## 📁 Repository Layout
+### Without any AI
+
+Follow `00_README.md` and run `scripts/build_proposal_docx_template.ps1` by hand.
+
+## Repository layout
 
 ```
 proposal-workflow/
-├── SKILL.md                     # Agent Skill entry (standard format, Chinese triggers)
+├── SKILL.md                     # Agent Skill entry
 ├── manifest.yaml                # DSH skill manifest
-├── references/                  # Generic formatting rules + 7-phase pipeline (subject-agnostic)
-├── templates/                   # Topic-input checklist + evidence-base + config templates (custom_rules)
-├── scripts/                     # One-click school-template backfill (.ps1, Windows built-ins only)
-└── examples/demo-runbook.md     # Full sanitized demo on a fictional topic
+├── references/                  # Formatting rules + the seven-phase pipeline
+├── templates/                   # Input checklist, config templates, etc.
+├── scripts/                     # School-template backfill script (Windows built-ins only)
+└── examples/demo-runbook.md     # A full walkthrough on a fictional topic
 ```
 
-## 📖 Documentation
+## Docs
 
-- `00_README.md` — full user guide (what to prepare / how to start / FAQ), Chinese
-- `安装说明-Claude.md` / `安装说明-DSH.md` — platform install guides (Chinese)
+- `00_README.md` — user guide (what to prepare, how to start, FAQ), in Chinese
+- `安装说明-Claude.md` / `安装说明-DSH.md` — install guides, in Chinese
 - `CHANGELOG.md` — version history
-- `release/` — downloadable zip with all files
+- `release/` — packaged zip
 
-## 🛠 Tech Stack & Dependencies
+## Requirements
 
-- No Python, no Node, no extra runtime (script uses only Windows built-in `tar` and `Compress-Archive`; Mac/Linux script planned).
-- Reference verification relies on the agent's web/DB access; a non-networked agent will ask the user for a list of references to add.
+- Windows 10/11. No Python, Node or other runtimes needed (the script only uses the built-in tar and Compress-Archive; a Mac/Linux version is planned).
+- Literature search needs an AI with web access; an offline agent will give you a list of references to add yourself.
 
-## ⚖️ License
+## License
 
 MIT License — see [LICENSE](LICENSE).
-
-## 🙋 Feedback & Contributions
-
-Found a bug? Want a rule promoted into the generic ruleset, or another agent adapter (e.g. ChatGPT master prompt, Mac script)? Open an Issue or PR. New rules are split: generic ones go into the formatting rules, topic-specific ones into `custom_rules`.
