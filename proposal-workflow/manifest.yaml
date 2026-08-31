@@ -1,0 +1,48 @@
+name: proposal-workflow
+version: 1.0.0
+description: >
+  Subject-agnostic standardized proposal-writing pipeline for Chinese university
+  opening reports. 中文触发词：开题报告、学位论文开题、课题开题、研究方案、立项报告、
+  科研写作、一键开题。Any discipline: provide topic, school DOCX template,
+  writing requirements, and literature materials to get a complete proposal pack.
+
+always_load:
+  - SKILL.md
+
+templates:
+  on_demand:
+    - condition: collecting inputs for any new proposal project (checklist, generates config.json)
+      path: templates/课题输入清单.md
+    - condition: configuring a project before running the pipeline (anchors, old title, section files, custom rules)
+      path: templates/proposal_project_config.md
+    - condition: initializing a new proposal project or rebuilding the foundation file set
+      path: templates/00_scope.md
+    - condition: creating or auditing the research canon of hard facts and constraints
+      path: templates/01_research_canon.md
+    - condition: mapping claims to evidence before prose drafting
+      path: templates/02_evidence_table.md
+    - condition: building the argument map before section drafting
+      path: templates/03_argument_map.md
+    - condition: defining section purposes, inputs, allowed claims, and forbidden claims
+      path: templates/04_section_contracts.md
+    - condition: setting terminology, voice, banned phrases, or style rules
+      path: templates/05_style_guide.md
+    - condition: producing a QA report after the review pipeline
+      path: templates/qa_report.md
+    - condition: writing a targeted revision brief after a failed gate or expert review
+      path: templates/revision_brief.md
+
+references:
+  on_demand:
+    - condition: running the 7-phase proposal pipeline end to end
+      path: references/proposal-auto-pipeline.md
+    - condition: enforcing generic formatting rules for Chinese university opening reports
+      path: references/开题报告格式铁律.md
+    - condition: consulting a fully sanitized demo run of the workflow on a fictional topic
+      path: examples/demo-runbook.md
+
+scripts:
+  on_demand:
+    - condition: filling a school-provided DOCX template with section markdown and references, preserving fixed forms
+      path: scripts/build_proposal_docx_template.ps1
+      note: PowerShell-only; uses tar + Compress-Archive; no Python required.
